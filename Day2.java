@@ -1,9 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
-import java.util.Arrays;
 
 public class Day2 {
     public static void main(String[] args) {
