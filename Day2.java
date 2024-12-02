@@ -37,25 +37,20 @@ public class Day2 {
         int safe = 0;
 
         for (ArrayList<Integer> list : lists) {
-            if (checkSafe(list))
-                safe++;
-            else {
-                int removeIndex = 0;
-                boolean safeFound = false;
-                while (removeIndex != list.size() && !safeFound) {
-                    ArrayList<Integer> copyList = new ArrayList<Integer>();
-                    for (int j = 0; j < list.size(); j++) {
-                        if (j != removeIndex) {
-                            copyList.add(list.get(j));
-                        }
+            int removeIndex = -1;
+            boolean safeFound = false;
+            while (removeIndex != list.size() && !safeFound) {
+                ArrayList<Integer> copyList = new ArrayList<Integer>();
+                for (int j = 0; j < list.size(); j++) {
+                    if (j != removeIndex) {
+                        copyList.add(list.get(j));
                     }
-                    if (checkSafe(copyList)) {
-                        safe++;
-                        safeFound = true;
-                    }
-                    removeIndex++;
                 }
-
+                if (checkSafe(copyList)) {
+                    safe++;
+                    safeFound = true;
+                }
+                removeIndex++;
             }
         }
 
