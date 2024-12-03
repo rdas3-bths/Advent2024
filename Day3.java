@@ -16,11 +16,10 @@ public class Day3 {
         ArrayList<String> partTwoMatches = new ArrayList<String>();
 
         String regex = "mul\\([1-9][0-9]{0,2},[1-9][0-9]{0,2}\\)";
-
-        String filteredOperations = filterOperations(operations);
+        String regexPartTwo = "mul\\([1-9][0-9]{0,2},[1-9][0-9]{0,2}\\)|do\\(\\)|don't\\(\\)";
 
         Matcher partOne = Pattern.compile(regex).matcher(operations);
-        Matcher partTwo = Pattern.compile(regex).matcher(filteredOperations);
+        Matcher partTwo = Pattern.compile(regexPartTwo).matcher(operations);
 
         while (partOne.find()) {
             partOneMatches.add(partOne.group());
@@ -30,7 +29,6 @@ public class Day3 {
             partTwoMatches.add(partTwo.group());
         }
 
-
         int partOneTotal = 0;
         int partTwoTotal = 0;
 
@@ -38,36 +36,21 @@ public class Day3 {
             partOneTotal += doMulOperation(op);
         }
 
+        boolean process = true;
         for (String op : partTwoMatches) {
-            partTwoTotal += doMulOperation(op);
+
+            if (op.equals("don't()")) {
+                process = false;
+            }
+            if (op.equals("do()")) {
+                process = true;
+            }
+            if (op.contains("mul") && process)
+                partTwoTotal += doMulOperation(op);
         }
 
         System.out.println("Part one answer: " + partOneTotal);
         System.out.println("Part one answer: " + partTwoTotal);
-    }
-
-    public static String filterOperations(String fullOp) {
-        String newOp = "";
-        boolean foundDont = false;
-        for (int i = 0; i < fullOp.length(); i++) {
-            String currentLetter = fullOp.substring(i, i+1);
-            if (currentLetter.equals("d")) {
-
-                String dontCheck = fullOp.substring(i, i+7);
-                String doCheck = fullOp.substring(i, i+4);
-                if (dontCheck.equals("don't()")) {
-                    foundDont = true;
-                }
-                if (doCheck.equals("do()")) {
-                    foundDont = false;
-                }
-            }
-            if (!foundDont) {
-                newOp += currentLetter;
-            }
-
-        }
-        return newOp;
     }
 
     public static int doMulOperation(String op) {
