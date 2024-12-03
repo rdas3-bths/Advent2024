@@ -42,10 +42,10 @@ public class Day3 {
             if (op.equals("don't()")) {
                 process = false;
             }
-            if (op.equals("do()")) {
+            else if (op.equals("do()")) {
                 process = true;
             }
-            if (op.contains("mul") && process)
+            else if (op.contains("mul") && process)
                 partTwoTotal += doMulOperation(op);
         }
 
