@@ -9,8 +9,11 @@ public class Day3 {
     public static void main(String[] args) {
         ArrayList<String> fileData = getFileData("src/InputFile");
 
-        // modified input to be on one line for easier processing
-        String operations = fileData.get(0);
+        // put all the input in one string for easier processing
+        String operations = "";
+        for (String line : fileData) {
+            operations += line;
+        }
 
         ArrayList<String> partOneMatches = new ArrayList<String>();
         ArrayList<String> partTwoMatches = new ArrayList<String>();
