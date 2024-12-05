@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Day5 {
@@ -42,16 +41,11 @@ public class Day5 {
                 partOneAnswer += middle;
             }
             else {
-                // get valid rules for this list of numbers
                 ArrayList<int[]> validRules = new ArrayList<int[]>();
                 for (int[] rules : allRules) {
                     if (isValidRule(numbers, rules))
                         validRules.add(rules);
                 }
-                // find the number that has exactly "middle" numbers
-                // before it in the rules
-                // noticed this because every pair of numbers in every list
-                // has an associated rule.
                 int middle = numbers.length/2;
                 for (int n : numbers) {
                     int count = 0;
