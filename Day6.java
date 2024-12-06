@@ -28,6 +28,8 @@ public class Day6 {
 
         ArrayList<String> loopPositions = new ArrayList<String>();
 
+        // save all the UNIQUE original positions that we traversed the first time through
+        // the map
         for (int i = 0; i < originalPath.size()-1; i++) {
             String[] data = originalPath.get(i).split(",");
             String position = data[0] + "," + data[1];
@@ -36,8 +38,11 @@ public class Day6 {
             }
         }
 
+        // put an obstacle at every original position on the map and check
+        // if it loops
         int loopsCreated = 0;
         for (int i = 0; i < loopPositions.size(); i++) {
+            // reset the map
             rows = originalGrid.length;
             columns = originalGrid[0].length;
             grid = new String[rows][columns];
@@ -50,7 +55,10 @@ public class Day6 {
             int[] obstacleInt = new int[2];
             obstacleInt[0] = Integer.parseInt(obstacle[0]);
             obstacleInt[1] = Integer.parseInt(obstacle[1]);
+            // put an obstacle in place
             grid[obstacleInt[0]][obstacleInt[1]] = "#";
+
+            // traverse map and check if it looped
             ArrayList<String> path = traverseMap(grid);
             if (path.get(path.size()-1).equals("yes"))
                 loopsCreated++;
@@ -60,12 +68,15 @@ public class Day6 {
     }
 
     public static ArrayList<String> traverseMap(String[][] grid) {
+
+        // set up starting positions
         int guardRow = -1;
         int guardColumn = -1;
         String direction = "N";
         ArrayList<String> positionsVisited = new ArrayList<String>();
         String foundLoop = "no";
 
+        // set up where the guard starts
         for (int r = 0; r < grid.length; r++) {
             for (int c = 0; c < grid[0].length; c++) {
                 if (grid[r][c].equals("^")) {
@@ -89,17 +100,21 @@ public class Day6 {
             if (direction.equals("W")) nextColumn = guardColumn - 1;
 
             try {
+                // found an obstacle
                 if (grid[nextRow][nextColumn].equals("#")) {
                     direction = turn(direction);
                 }
                 else {
+                    // no obstacle, move here
                     grid[nextRow][nextColumn] = "X";
                     guardRow = nextRow;
                     guardColumn = nextColumn;
+                    // have we been here before?
                     if (foundLoop(guardRow, guardColumn, direction, positionsVisited)) {
                         foundLoop = "yes";
                         canMove = false;
                     }
+                    // save that we have been here
                     positionsVisited.add(guardRow + "," + guardColumn + "," + direction);
                 }
             }
@@ -108,6 +123,7 @@ public class Day6 {
             }
         }
 
+        // the last item in the list is whether we looped or not
         positionsVisited.add(foundLoop);
         return positionsVisited;
     }
