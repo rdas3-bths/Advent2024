@@ -8,10 +8,17 @@ public class Day6 {
         ArrayList<String> fileData = getFileData("src/InputFile");
         int rows = fileData.size();
         int columns = fileData.get(0).length();
+        String[][] originalGrid = new String[rows][columns];
+        for (int r = 0; r < originalGrid.length; r++) {
+            for (int c = 0; c < originalGrid[0].length; c++) {
+                originalGrid[r][c] = fileData.get(r).substring(c, c + 1);
+            }
+        }
+
         String[][] grid = new String[rows][columns];
-        for (int r = 0; r < grid.length; r++) {
-            for (int c = 0; c < grid[0].length; c++) {
-                grid[r][c] = fileData.get(r).substring(c, c + 1);
+        for (int r = 0; r < originalGrid.length; r++) {
+            for (int c = 0; c < originalGrid[0].length; c++) {
+                grid[r][c] = originalGrid[r][c];
             }
         }
 
@@ -31,13 +38,12 @@ public class Day6 {
 
         int loopsCreated = 0;
         for (int i = 0; i < loopPositions.size(); i++) {
-            fileData = getFileData("src/InputFile");
-            rows = fileData.size();
-            columns = fileData.get(0).length();
+            rows = originalGrid.length;
+            columns = originalGrid[0].length;
             grid = new String[rows][columns];
             for (int r = 0; r < grid.length; r++) {
                 for (int c = 0; c < grid[0].length; c++) {
-                    grid[r][c] = fileData.get(r).substring(c, c + 1);
+                    grid[r][c] = originalGrid[r][c];
                 }
             }
             String[] obstacle = loopPositions.get(i).split(",");
@@ -70,7 +76,8 @@ public class Day6 {
             }
         }
 
-        while (true) {
+        boolean canMove = true;
+        while (canMove) {
 
             // get next position
             int nextRow = guardRow;
@@ -91,13 +98,13 @@ public class Day6 {
                     guardColumn = nextColumn;
                     if (foundLoop(guardRow, guardColumn, direction, positionsVisited)) {
                         foundLoop = "yes";
-                        break;
+                        canMove = false;
                     }
                     positionsVisited.add(guardRow + "," + guardColumn + "," + direction);
                 }
             }
             catch (Exception e) {
-                break;
+                canMove = false;
             }
         }
 
