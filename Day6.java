@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Day6 {
@@ -22,26 +23,29 @@ public class Day6 {
             }
         }
 
-        ArrayList<String> originalPath = traverseMap(grid);
+        HashSet<String> originalPath = traverseMap(grid);
 
         System.out.println("Part one answer: " + countVisited(grid));
 
-        ArrayList<String> loopPositions = new ArrayList<String>();
+        HashSet<String> loopPositions = new HashSet<String>();
 
         // save all the UNIQUE original positions that we traversed the first time through
         // the map
-        for (int i = 0; i < originalPath.size()-1; i++) {
-            String[] data = originalPath.get(i).split(",");
-            String position = data[0] + "," + data[1];
-            if (!loopPositions.contains(position)) {
-                loopPositions.add(position);
+        for (String s : originalPath) {
+            if (s.contains(",")) {
+                String[] data = s.split(",");
+                String position = data[0] + "," + data[1];
+                if (!loopPositions.contains(position)) {
+                    loopPositions.add(position);
+                }
             }
         }
 
         // put an obstacle at every original position on the map and check
         // if it loops
         int loopsCreated = 0;
-        for (int i = 0; i < loopPositions.size(); i++) {
+        for (String loopPosition : loopPositions) {
+
             // reset the map
             rows = originalGrid.length;
             columns = originalGrid[0].length;
@@ -51,7 +55,7 @@ public class Day6 {
                     grid[r][c] = originalGrid[r][c];
                 }
             }
-            String[] obstacle = loopPositions.get(i).split(",");
+            String[] obstacle = loopPosition.split(",");
             int[] obstacleInt = new int[2];
             obstacleInt[0] = Integer.parseInt(obstacle[0]);
             obstacleInt[1] = Integer.parseInt(obstacle[1]);
@@ -59,21 +63,21 @@ public class Day6 {
             grid[obstacleInt[0]][obstacleInt[1]] = "#";
 
             // traverse map and check if it looped
-            ArrayList<String> path = traverseMap(grid);
-            if (path.get(path.size()-1).equals("yes"))
+            HashSet<String> path = traverseMap(grid);
+            if (path.contains("yes"))
                 loopsCreated++;
         }
 
         System.out.println("Part two answer: " + loopsCreated);
     }
 
-    public static ArrayList<String> traverseMap(String[][] grid) {
+    public static HashSet<String> traverseMap(String[][] grid) {
 
         // set up starting positions
         int guardRow = -1;
         int guardColumn = -1;
         String direction = "N";
-        ArrayList<String> positionsVisited = new ArrayList<String>();
+        HashSet<String> positionsVisited = new HashSet<String>();
         String foundLoop = "no";
 
         // set up where the guard starts
@@ -128,14 +132,9 @@ public class Day6 {
         return positionsVisited;
     }
 
-    public static boolean foundLoop(int r, int c, String direction, ArrayList<String> positionsVisited) {
+    public static boolean foundLoop(int r, int c, String direction, HashSet<String> positionsVisited) {
         String newPosition = r + "," + c + "," + direction;
-        for (String v : positionsVisited) {
-            if (v.equals(newPosition)) {
-                return true;
-            }
-        }
-        return false;
+        return positionsVisited.contains(newPosition);
     }
 
     public static int countVisited(String[][] grid) {
