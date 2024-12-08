@@ -55,10 +55,9 @@ for key in frequencies.keys():
                 antinode_r = point1[0]
                 antinode_c = point1[1]
                 while 0 <= antinode_r < rows and 0 <= antinode_c < cols:
+                    unique_antinodes_part_two.add((antinode_r, antinode_c))
                     antinode_r = antinode_r + row_delta
                     antinode_c = antinode_c + col_delta
-                    if (0 <= antinode_r < len(grid)) and (0 <= antinode_c < len(grid[0])):
-                        unique_antinodes_part_two.add((antinode_r, antinode_c))
 
 
 print("Part one answer:", len(unique_antinodes_part_one))
