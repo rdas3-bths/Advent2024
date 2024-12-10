@@ -11,49 +11,32 @@ public class Day10 {
         ArrayList<String> fileData = getFileData("src/InputFile");
         int rows = fileData.size();
         int columns = fileData.get(0).length();
-        String[][] originalGrid = new String[rows][columns];
-        for (int r = 0; r < originalGrid.length; r++) {
-            for (int c = 0; c < originalGrid[0].length; c++) {
-                originalGrid[r][c] = fileData.get(r).substring(c, c + 1);
-            }
-        }
-
-        // build lava map
         int[][] lavaMap = new int[rows][columns];
-        for (int r = 0; r < originalGrid.length; r++) {
-            for (int c = 0; c < originalGrid[0].length; c++) {
-                if (originalGrid[r][c].equals(".")) {
-                    lavaMap[r][c] = -100;
-                }
-                else {
-                    lavaMap[r][c] = Integer.parseInt(originalGrid[r][c]);
-                }
-            }
-        }
-
-        // find all starting positions
-        ArrayList<int[]> startingPositions = new ArrayList<int[]>();
         for (int r = 0; r < lavaMap.length; r++) {
             for (int c = 0; c < lavaMap[0].length; c++) {
-                if (lavaMap[r][c] == 0) {
-                    int[] position = new int[2];
-                    position[0] = r;
-                    position[1] = c;
-                    startingPositions.add(position);
-                }
+                String entry = fileData.get(r).substring(c, c + 1);
+                if (entry.equals(".")) lavaMap[r][c] = -100;
+                else
+                    lavaMap[r][c] = Integer.parseInt(entry);
+
             }
         }
 
         int partOneAnswer = 0;
         int partTwoAnswer = 0;
 
-        // for each starting position, traverse the map
-        for (int[] position : startingPositions) {
-            TrailHeadInfo trailHead = new TrailHeadInfo(position[0], position[1]);
-            traverseMap(lavaMap, position[0], position[1], trailHead);
-            partOneAnswer += trailHead.getEndPoints().size();
-            partTwoAnswer += trailHead.getRating();
+        for (int r = 0; r < lavaMap.length; r++) {
+            for (int c = 0; c < lavaMap[0].length; c++) {
+                if (lavaMap[r][c] == 0) {
+                    TrailHeadInfo trailHead = new TrailHeadInfo(r, c);
+                    traverseMap(lavaMap, r, c, trailHead);
+                    partOneAnswer += trailHead.getEndPoints().size();
+                    partTwoAnswer += trailHead.getRating();
+                }
+            }
         }
+
+
         System.out.println("Part one answer: " + partOneAnswer);
         System.out.println("Part two answer: " + partTwoAnswer);
     }
