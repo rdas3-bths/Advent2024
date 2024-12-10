@@ -18,6 +18,7 @@ public class Day10 {
             }
         }
 
+        // build lava map
         int[][] lavaMap = new int[rows][columns];
         for (int r = 0; r < originalGrid.length; r++) {
             for (int c = 0; c < originalGrid[0].length; c++) {
@@ -30,6 +31,7 @@ public class Day10 {
             }
         }
 
+        // find all starting positions
         ArrayList<int[]> startingPositions = new ArrayList<int[]>();
         for (int r = 0; r < lavaMap.length; r++) {
             for (int c = 0; c < lavaMap[0].length; c++) {
@@ -44,6 +46,8 @@ public class Day10 {
 
         int partOneAnswer = 0;
         int partTwoAnswer = 0;
+
+        // for each starting position, traverse the map
         for (int[] position : startingPositions) {
             TrailHeadInfo trailHead = new TrailHeadInfo(position[0], position[1]);
             traverseMap(lavaMap, position[0], position[1], trailHead);
@@ -63,6 +67,7 @@ public class Day10 {
             // find directions
             String directions = getDirections(lavaMap, row, col);
 
+            // for each direction
             for (int i = 0; i < directions.length(); i++) {
                 int newRow = row;
                 int newCol = col;
@@ -73,6 +78,7 @@ public class Day10 {
                 if (d == 'l') newCol--;
                 if (d == 'r') newCol++;
 
+                // recursive call to try each direction
                 traverseMap(lavaMap, newRow, newCol, trailHead);
             }
         }
@@ -145,6 +151,9 @@ class TrailHeadInfo {
     public void addEndPoint(String endPoint) {
 
         endPoints.add(endPoint);
+
+        // this is for part 2
+        // if we are trying to add an end point that we already got to, the rating should go up
         if (endPoints.contains(endPoint)) rating++;
     }
 
