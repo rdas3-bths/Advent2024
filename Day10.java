@@ -80,37 +80,32 @@ public class Day10 {
 
     public static String getDirections(int[][] lavaMap, int row, int column) {
         String directions = "";
-        try {
-            // right
+        // right
+        if (column < lavaMap[0].length - 1) {
             if (lavaMap[row][column] + 1 == lavaMap[row][column+1]) {
                 directions += "r";
             }
         }
-        catch (ArrayIndexOutOfBoundsException a) { }
-
-        try {
+        if (column > 0) {
             // left
             if (lavaMap[row][column] + 1 == lavaMap[row][column-1]) {
                 directions += "l";
             }
         }
-        catch (ArrayIndexOutOfBoundsException a) { }
 
-        try {
+        if (row > 0) {
             // up
             if (lavaMap[row][column] + 1 == lavaMap[row-1][column]) {
                 directions += "u";
             }
         }
-        catch (ArrayIndexOutOfBoundsException a) { }
 
-        try {
+        if (row < lavaMap.length - 1) {
             // down
             if (lavaMap[row][column] + 1 == lavaMap[row+1][column]) {
                 directions += "d";
             }
         }
-        catch (ArrayIndexOutOfBoundsException a) { }
 
         return directions;
 
