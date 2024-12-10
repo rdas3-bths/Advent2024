@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Day5 {
+public class Day05 {
     public static void main(String[] args) {
         ArrayList<String> fileData = getFileData("src/InputFile");
         ArrayList<int[]> allRules = new ArrayList<int[]>();
