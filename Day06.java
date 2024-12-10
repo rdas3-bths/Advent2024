@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
-public class Day6 {
+public class Day06 {
     public static void main(String[] args) {
         ArrayList<String> fileData = getFileData("src/InputFile");
         int rows = fileData.size();
