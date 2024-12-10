@@ -7,8 +7,6 @@ import java.util.Scanner;
 
 public class Day10 {
 
-    public static int rating = 0;
-
     public static void main(String[] args) {
         ArrayList<String> fileData = getFileData("src/InputFile");
         int rows = fileData.size();
@@ -47,7 +45,6 @@ public class Day10 {
         int partOneAnswer = 0;
         int partTwoAnswer = 0;
         for (int[] position : startingPositions) {
-            rating = 0;
             TrailHeadInfo trailHead = new TrailHeadInfo(position[0], position[1]);
             traverseMap(lavaMap, position[0], position[1], trailHead);
             partOneAnswer += trailHead.getEndPoints().size();
@@ -57,9 +54,8 @@ public class Day10 {
         System.out.println("Part two answer: " + partTwoAnswer);
     }
 
-    public static TrailHeadInfo traverseMap(int[][] lavaMap, int startRow, int startCol, TrailHeadInfo trailHead) {
-
-
+    public static void traverseMap(int[][] lavaMap, int startRow, int startCol, TrailHeadInfo trailHead) {
+        
         // base case, found a 9
         if (lavaMap[startRow][startCol] == 9) {
 
@@ -67,27 +63,24 @@ public class Day10 {
             if (trailHead.getEndPoints().contains(startRow + "," + startCol)) {
                 trailHead.increaseRating();
             }
-            return trailHead;
         }
+        else {
+            // find directions
+            String directions = getDirections(lavaMap, startRow, startCol);
 
-        // find directions
-        String directions = getDirections(lavaMap, startRow, startCol);
+            for (int i = 0; i < directions.length(); i++) {
+                int newRow = startRow;
+                int newCol = startCol;
+                char d = directions.charAt(i);
 
-        for (int i = 0; i < directions.length(); i++) {
-            int newRow = startRow;
-            int newCol = startCol;
-            char d = directions.charAt(i);
+                if (d == 'u') newRow--;
+                if (d == 'd') newRow++;
+                if (d == 'l') newCol--;
+                if (d == 'r') newCol++;
 
-            if (d == 'u') newRow--;
-            if (d == 'd') newRow++;
-            if (d == 'l') newCol--;
-            if (d == 'r') newCol++;
-
-            traverseMap(lavaMap, newRow, newCol, trailHead);
+                traverseMap(lavaMap, newRow, newCol, trailHead);
+            }
         }
-
-        return trailHead;
-
     }
 
     public static String getDirections(int[][] lavaMap, int row, int column) {
