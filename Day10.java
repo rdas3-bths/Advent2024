@@ -55,14 +55,9 @@ public class Day10 {
     }
 
     public static void traverseMap(int[][] lavaMap, int startRow, int startCol, TrailHeadInfo trailHead) {
-        
         // base case, found a 9
         if (lavaMap[startRow][startCol] == 9) {
-
             trailHead.addEndPoint(startRow + "," + startCol);
-            if (trailHead.getEndPoints().contains(startRow + "," + startCol)) {
-                trailHead.increaseRating();
-            }
         }
         else {
             // find directions
@@ -121,16 +116,6 @@ public class Day10 {
 
     }
 
-    public static void printGrid(int[][] grid) {
-        for (int[] r : grid) {
-            for (int c : r) {
-                System.out.print(c);
-            }
-            System.out.println();
-        }
-
-    }
-
     public static ArrayList<String> getFileData(String fileName) {
         ArrayList<String> fileData = new ArrayList<String>();
         try {
@@ -162,12 +147,10 @@ class TrailHeadInfo {
         startingCol = c;
     }
 
-    public void increaseRating() {
-        rating++;
-    }
-
     public void addEndPoint(String endPoint) {
+
         endPoints.add(endPoint);
+        if (endPoints.contains(endPoint)) rating++;
     }
 
     public HashSet<String> getEndPoints() {
