@@ -54,18 +54,18 @@ public class Day10 {
         System.out.println("Part two answer: " + partTwoAnswer);
     }
 
-    public static void traverseMap(int[][] lavaMap, int startRow, int startCol, TrailHeadInfo trailHead) {
+    public static void traverseMap(int[][] lavaMap, int row, int col, TrailHeadInfo trailHead) {
         // base case, found a 9
-        if (lavaMap[startRow][startCol] == 9) {
-            trailHead.addEndPoint(startRow + "," + startCol);
+        if (lavaMap[row][col] == 9) {
+            trailHead.addEndPoint(row + "," + col);
         }
         else {
             // find directions
-            String directions = getDirections(lavaMap, startRow, startCol);
+            String directions = getDirections(lavaMap, row, col);
 
             for (int i = 0; i < directions.length(); i++) {
-                int newRow = startRow;
-                int newCol = startCol;
+                int newRow = row;
+                int newCol = col;
                 char d = directions.charAt(i);
 
                 if (d == 'u') newRow--;
