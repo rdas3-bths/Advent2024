@@ -134,10 +134,7 @@ class TrailHeadInfo {
     public void addEndPoint(String endPoint) {
 
         endPoints.add(endPoint);
-
-        // this is for part 2
-        // if we are trying to add an end point that we already got to, the rating should go up
-        if (endPoints.contains(endPoint)) rating++;
+        rating++;
     }
 
     public HashSet<String> getEndPoints() {
