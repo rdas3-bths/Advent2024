@@ -18,35 +18,26 @@ public class Day11 {
             stoneMap.put(stoneNumber, stoneCount+1);
         }
 
-
-        int partOneAnswer = 0;
-        for (int j = 0; j < numbers.size(); j++) {
-            ArrayList<Long> process = new ArrayList<Long>();
-            process.add(numbers.get(j));
-            int blinks = 25;
-            for (int i = 0; i < blinks; i++) {
-                doBlinkPartOne(process);
-            }
-            partOneAnswer += process.size();
-        }
-
-
-        System.out.println("Part one answer: " + partOneAnswer);
-        int blinks = 75;
-        for (int i = 0; i < blinks; i++) {
-            doBlinkPartTwo(stoneMap);
-        }
-
-        long partTwoAnswer = 0;
-        for (long value : stoneMap.values()) {
-            partTwoAnswer += value;
-        }
-        System.out.println("Part two answer: " + partTwoAnswer);
-
+        int blinks = 25;
+        System.out.println("Part one answer: "+ doBlinks(stoneMap, blinks));
+        blinks = 50;
+        System.out.println("Part two answer: "+ doBlinks(stoneMap, blinks));
 
     }
 
-    public static void doBlinkPartTwo(HashMap<Long, Long> stoneMap) {
+    public static long doBlinks(HashMap<Long, Long> stoneMap, int blinks) {
+        for (int i = 0; i < blinks; i++) {
+            doSingleBlink(stoneMap);
+        }
+        long answer = 0;
+        for (long value : stoneMap.values()) {
+            answer += value;
+        }
+        return answer;
+
+    }
+
+    public static void doSingleBlink(HashMap<Long, Long> stoneMap) {
         ArrayList<Long> keys = new ArrayList<Long>();
         keys.addAll(stoneMap.keySet());
         HashMap<Long, Long> stoneMapCopy = new HashMap<Long, Long>();
@@ -55,13 +46,11 @@ public class Day11 {
         }
         for (long key : keys) {
             long stoneNumber = getStoneAmount(stoneMapCopy, key);
-            if (stoneNumber == 0)
-                continue;
             String keyString = key + "";
 
             if (key == 0) {
-                stoneMap.put((long)1, getStoneAmount(stoneMap,1) + stoneNumber);
-                stoneMap.put((long)0, getStoneAmount(stoneMap,0) - stoneNumber);
+                stoneMap.put(key+1, getStoneAmount(stoneMap,1) + stoneNumber);
+                stoneMap.put(key, getStoneAmount(stoneMap,0) - stoneNumber);
             }
 
             else if (keyString.length() % 2 == 0) {
@@ -79,31 +68,6 @@ public class Day11 {
                 stoneMap.put(key, getStoneAmount(stoneMap, key) - stoneNumber);
             }
 
-        }
-    }
-
-    public static void doBlinkPartOne(ArrayList<Long> numbers) {
-        for (int i = 0; i < numbers.size(); i++) {
-            long currentNumber = numbers.get(i);
-            String currentNumberString = currentNumber + "";
-
-            if (currentNumber == 0) {
-                numbers.set(i, currentNumber+1);
-            }
-
-            else if (currentNumberString.length() % 2 == 0) {
-                String firstHalf = currentNumberString.substring(0, currentNumberString.length()/2);
-                String secondHalf = currentNumberString.substring(currentNumberString.length()/2);
-                long firstHalfNumber = Long.parseLong(firstHalf);
-                long secondHalfNumber = Long.parseLong(secondHalf);
-                numbers.set(i, firstHalfNumber);
-                numbers.add(i+1, secondHalfNumber);
-                i++;
-            }
-
-            else {
-                numbers.set(i, currentNumber*2024);
-            }
         }
     }
 
