@@ -7,15 +7,10 @@ import java.util.Scanner;
 public class Day11 {
     public static void main(String[] args) {
         ArrayList<String> fileData = getFileData("src/InputFile");
-        ArrayList<Long> numbers = new ArrayList<Long>();
         HashMap<Long, Long> stoneMap = new HashMap<Long, Long>();
-        String line = fileData.get(0);
-        String[] stringNumbers = line.split(" ");
-        for (String n : stringNumbers) {
-            long stoneNumber = Long.parseLong(n);
-            numbers.add(Long.parseLong(n));
-            long stoneCount = getStoneAmount(stoneMap, stoneNumber);
-            stoneMap.put(stoneNumber, stoneCount+1);
+        for (String n : fileData.get(0).split(" ")) {
+            long stoneCount = getStoneAmount(stoneMap, Long.parseLong(n));
+            stoneMap.put(Long.parseLong(n), stoneCount+1);
         }
 
         int blinks = 25;
