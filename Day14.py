@@ -136,8 +136,6 @@ for i in range(100):
         move_robot(robots[k])
     grid = populate_grid(robots)
 
-m = calculate_score(grid)
-
 # Part two was terrible
 # I just let it run for a long time and recorded a video of the output
 # I then looked at the video to look for a shape and found that a tree shows up around the 7000s
