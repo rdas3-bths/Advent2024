@@ -6,7 +6,7 @@ def get_file_data(file_name):
     return data
 
 
-def traverse_maze(grid):
+def traverse_maze(grid, start, end):
     #                  r        d        l        u
     direction_map = [(0, 1), (-1, 0), (0, -1), (1, 0)]
     routes = []
@@ -65,7 +65,7 @@ for line in file_data:
     grid.append(row)
 
 
-path_to_end = traverse_maze(grid)
+path_to_end = traverse_maze(grid, start, end)
 
 all_end_scores = []
 for path in path_to_end:
