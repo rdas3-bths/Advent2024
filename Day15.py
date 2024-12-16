@@ -17,63 +17,26 @@ def get_file_data(file_name):
     return data
 
 
-def push_block_down(row, col, grid):
+def push_block(row, col, grid, move):
+    next_row_offset, next_col_offset = DIRECTIONS[move]
+    next_row = row + next_row_offset
+    next_col = col + next_col_offset
     if grid[row][col] == ".":
         return
-    if grid[row + 1][col] == "O":
-        push_block_down(row + 1, col, grid)
-    if grid[row+1][col] == "#":
+    if grid[next_row][next_col] == "O":
+        push_block(next_row, next_col, grid, move)
+    if grid[next_row][next_col] == "#":
         return
-    if grid[row+1][col] == ".":
+    if grid[next_row][next_col] == ".":
         grid[row][col] = "."
-        grid[row+1][col] = "O"
-
-
-def push_block_up(row, col, grid):
-    if grid[row][col] == ".":
-        return
-    if grid[row-1][col] == "O":
-        push_block_up(row-1, col, grid)
-    if grid[row-1][col] == "#":
-        return
-    if grid[row-1][col] == ".":
-        grid[row][col] = "."
-        grid[row-1][col] = "O"
-
-
-def push_block_right(row, col, grid):
-    if grid[row][col] == ".":
-        return
-    if grid[row][col+1] == "O":
-        push_block_right(row, col+1, grid)
-    if grid[row][col+1] == "#":
-        return
-    if grid[row][col+1] == ".":
-        grid[row][col] = "."
-        grid[row][col+1] = "O"
-
-
-def push_block_left(row, col, grid):
-    if grid[row][col] == ".":
-        return
-    if grid[row][col-1] == "O":
-        push_block_left(row, col-1, grid)
-    if grid[row][col-1] == "#":
-        return
-    if grid[row][col-1] == ".":
-        grid[row][col] = "."
-        grid[row][col-1] = "O"
+        grid[next_row][next_col] = "O"
 
 
 def get_move_spot(row, col, move, grid):
-    if move == "^":
-        return grid[row-1][col], row-1, col
-    if move == "v":
-        return grid[row+1][col], row+1, col
-    if move == "<":
-        return grid[row][col-1], row, col-1
-    if move == ">":
-        return grid[row][col+1], row, col+1
+    next_row_offset, next_col_offset = DIRECTIONS[move]
+    next_row = row + next_row_offset
+    next_col = col + next_col_offset
+    return grid[next_row][next_col], next_row, next_col
 
 
 def get_robot_position(grid):
@@ -98,14 +61,7 @@ def do_part_one(grid, moves):
         next_spot_item, next_row, next_col = get_move_spot(robot_row, robot_col, move, grid)
 
         if next_spot_item == "O":
-            if move == "^":
-                push_block_up(next_row, next_col, grid)
-            if move == "v":
-                push_block_down(next_row, next_col, grid)
-            if move == "<":
-                push_block_left(next_row, next_col, grid)
-            if move == ">":
-                push_block_right(next_row, next_col, grid)
+            push_block(next_row, next_col, grid, move)
             next_spot_item, next_row, next_col = get_move_spot(robot_row, robot_col, move, grid)
 
         if next_spot_item == ".":
