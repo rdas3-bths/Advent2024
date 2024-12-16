@@ -7,7 +7,7 @@ def get_file_data(file_name):
 
 
 def traverse_maze(grid):
-
+    #                  r        d        l        u
     direction_map = [(0, 1), (-1, 0), (0, -1), (1, 0)]
     routes = []
     visited = {}
@@ -16,15 +16,19 @@ def traverse_maze(grid):
     while visited_nodes_data:
         (current_row, current_col), node_path, curr_score, curr_dir = visited_nodes_data.pop(0)
 
+        # we are at the goal. update the routes dict to show the path and score to the goal
         if (current_row, current_col) == end:
             routes.append((node_path, curr_score))
             continue
 
+        # we are at a node, check the current score. if we have gotten here in a "better" way, skip
         if ((current_row, current_col), curr_dir) in visited and visited[((current_row, current_col), curr_dir)] < curr_score:
             continue
 
+        # update score for this node
         visited[((current_row, current_col), curr_dir)] = curr_score
 
+        # check directions
         for dir_index, (row_change, col_change) in enumerate(direction_map):
             # check opposite direction
             if (curr_dir + 2) % 4 == dir_index:
@@ -32,8 +36,10 @@ def traverse_maze(grid):
 
             new_row, new_col = current_row + row_change, current_col + col_change
             if grid[new_row][new_col] != "#" and (new_row, new_col) not in node_path:
+                # same direction
                 if dir_index == curr_dir:
                     visited_nodes_data.append(((new_row, new_col), node_path + [(new_row, new_col)], curr_score + 1, dir_index))  # move forward
+                # new direction
                 else:
                     visited_nodes_data.append(((current_row, current_col), node_path, curr_score + 1000, dir_index))  # turn
 
