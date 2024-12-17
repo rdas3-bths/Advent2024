@@ -23,36 +23,31 @@ def get_combo_operand(operand, a, b, c):
 
 def do_program(program_instructions, register_a, register_b, register_c):
     i = 0
-    jump = False
+
     output = []
     while i < len(program_instructions) - 1:
+        jump = False
         opcode = program_instructions[i]
         operand = program_instructions[i + 1]
         if opcode == 0:
             register_a = register_a // (2 ** get_combo_operand(operand, register_a, register_b, register_c))
-            i += 2
         if opcode == 1:
             register_b = register_b ^ operand
-            i += 2
         if opcode == 2:
             register_b = get_combo_operand(operand, register_a, register_b, register_c) % 8
-            i += 2
         if opcode == 3:
             if register_a != 0:
                 i = operand
-            else:
-                i += 2
+                jump = True
         if opcode == 4:
             register_b = register_b ^ register_c
-            i += 2
         if opcode == 5:
             output.append(get_combo_operand(operand, register_a, register_b, register_c) % 8)
-            i += 2
         if opcode == 6:
             register_b = register_a // (2 ** get_combo_operand(operand, register_a, register_b, register_c))
-            i += 2
         if opcode == 7:
             register_c = register_a // (2 ** get_combo_operand(operand, register_a, register_b, register_c))
+        if not jump:
             i += 2
     return output
 
