@@ -12,9 +12,9 @@ def traverse_maze(grid, start, end):
     routes = []
     visited = {}
 
-    visited_nodes_data = [(start, [start], 0, 0)]  # (current_row, current_col), node_path, score, direction
-    while visited_nodes_data:
-        (current_row, current_col), node_path, curr_score, curr_dir = visited_nodes_data.pop(0)
+    unvisited_nodes = [(start, [start], 0, 0)]  # (current_row, current_col), node_path, score, direction
+    while unvisited_nodes:
+        (current_row, current_col), node_path, curr_score, curr_dir = unvisited_nodes.pop(0)
 
         # we are at the goal. update the routes dict to show the path and score to the goal
         if (current_row, current_col) == end:
@@ -22,7 +22,8 @@ def traverse_maze(grid, start, end):
             continue
 
         # we are at a node, check the current score. if we have gotten here in a "better" way, skip
-        if ((current_row, current_col), curr_dir) in visited and visited[((current_row, current_col), curr_dir)] < curr_score:
+        if (((current_row, current_col), curr_dir) in visited and
+                visited[((current_row, current_col), curr_dir)] < curr_score):
             continue
 
         # update score for this node
@@ -38,15 +39,17 @@ def traverse_maze(grid, start, end):
             if grid[new_row][new_col] != "#" and (new_row, new_col) not in node_path:
                 # same direction
                 if dir_index == curr_dir:
-                    visited_nodes_data.append(((new_row, new_col), node_path + [(new_row, new_col)], curr_score + 1, dir_index))  # move forward
+                    unvisited_nodes.append(((new_row, new_col),
+                                            node_path + [(new_row, new_col)], curr_score + 1, dir_index))  # move forward
                 # new direction
                 else:
-                    visited_nodes_data.append(((current_row, current_col), node_path, curr_score + 1000, dir_index))  # turn
+                    unvisited_nodes.append(((current_row, current_col),
+                                            node_path, curr_score + 1000, dir_index))  # turn
 
     return routes
 
 
-file_data = get_file_data("InputFile")
+file_data = get_file_data("input_file")
 grid = []
 start = None
 end = None
