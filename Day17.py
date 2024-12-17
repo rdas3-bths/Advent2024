@@ -21,7 +21,7 @@ def get_combo_operand(operand, a, b, c):
     return -1
 
 
-def do_program(progam_instructions, register_a, register_b, register_c):
+def do_program(program_instructions, register_a, register_b, register_c):
     i = 0
     jump = False
     output = []
