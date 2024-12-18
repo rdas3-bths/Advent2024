@@ -49,18 +49,14 @@ def traverse_maze(grid):
     unvisited = [(start, 0, 0)]  # (current_row, current_col), node_path, score, direction
     while unvisited:
         (current_row, current_col), curr_score, curr_dir = unvisited.pop(0)
-        # we are at the goal. update the routes dict to show the path and score to the goal
         if (current_row, current_col) == end:
             steps_to_goal.append(curr_score)
 
-        # we are at a node, check the current score. if we have gotten here in a "better" way, skip
         if ((current_row, current_col), curr_dir) in visited:
             continue
 
-        # update score for this node
         visited[((current_row, current_col), curr_dir)] = curr_score
 
-        # check directions
         for dir_index, (row_change, col_change) in enumerate(direction_map):
             # check opposite direction
             if (curr_dir + 2) % 4 == dir_index:
