@@ -39,6 +39,7 @@ def make_grid():
 
 
 def traverse_maze(grid):
+    steps_to_goal = []
     start = (1, 1)
     end = (MAX_GRID, MAX_GRID)
     #                  r        d        l        u
@@ -50,7 +51,7 @@ def traverse_maze(grid):
         (current_row, current_col), curr_score, curr_dir = unvisited.pop(0)
         # we are at the goal. update the routes dict to show the path and score to the goal
         if (current_row, current_col) == end:
-            return curr_score
+            steps_to_goal.append(curr_score)
 
         # we are at a node, check the current score. if we have gotten here in a "better" way, skip
         if ((current_row, current_col), curr_dir) in visited:
@@ -69,7 +70,7 @@ def traverse_maze(grid):
             if grid[new_row][new_col] != "#":
                 unvisited.append(((new_row, new_col), curr_score + 1, dir_index))
 
-    return -1
+    return steps_to_goal
 
 
 grid = make_grid()
@@ -91,14 +92,14 @@ for i in range(SIMULATE_BYTES):
     grid[row+1][col+1] = "#"
 
 
-print("Part one answer:", traverse_maze(grid))
+print("Part one answer:", min(traverse_maze(grid)))
 
 b = SIMULATE_BYTES
 while b < len(all_bytes):
     row, col = all_bytes[b]
     grid[row + 1][col + 1] = "#"
     steps = traverse_maze(grid)
-    if steps == -1:
-        print("Part two answer:", str(all_bytes[b][0]) + "," + str(all_bytes[b][1]))
+    if len(steps) == 0:
+        print("Part two answer:", str(all_bytes[b][1]) + "," + str(all_bytes[b][0]))
         break
     b += 1
