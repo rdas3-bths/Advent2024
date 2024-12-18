@@ -10,73 +10,95 @@ def get_file_data(file_name):
         data.append(line.rstrip())
     return data
 
+def make_grid():
 
-def do_part_one(corrupted_bytes):
+    grid = []
+    for i in range(MAX_GRID):
+        row = []
+        for j in range(MAX_GRID):
+            row.append(".")
+        grid.append(row)
 
-    start_position = (0, 0)
-    end_position = (MAX_GRID-1, MAX_GRID-1)
+    buffer_row = []
+    for i in range(MAX_GRID):
+        buffer_row.append("#")
 
-    visited = set()
-    unvisited = [(start_position, (1, 0), 0), (start_position, (0, 1), 0)]
+    grid.insert(0, buffer_row)
 
+    buffer_row = []
+    for i in range(MAX_GRID):
+        buffer_row.append("#")
+
+    grid.append(buffer_row)
+
+    for row in grid:
+        row.insert(0, "#")
+        row.append("#")
+
+    return grid
+
+
+def traverse_maze(grid):
+    start = (1, 1)
+    end = (MAX_GRID, MAX_GRID)
+    #                  r        d        l        u
+    direction_map = [(0, 1), (-1, 0), (0, -1), (1, 0)]
+    visited = {}
+
+    unvisited = [(start, 0, 0)]  # (current_row, current_col), node_path, score, direction
     while unvisited:
-        current_position, current_direction, steps = unvisited.pop(0)
-        visited.add(current_position)
+        (current_row, current_col), curr_score, curr_dir = unvisited.pop(0)
+        # we are at the goal. update the routes dict to show the path and score to the goal
+        if (current_row, current_col) == end:
+            return curr_score
 
-        if current_position==end_position:
-            return steps
+        # we are at a node, check the current score. if we have gotten here in a "better" way, skip
+        if ((current_row, current_col), curr_dir) in visited:
+            continue
 
-        x, y = current_position
+        # update score for this node
+        visited[((current_row, current_col), curr_dir)] = curr_score
 
-        for direction in DIRECTIONS:
-            change_x, change_y = direction
-            x_new, y_new = (x + change_x), (y + change_y)
-
-            if x_new < 0 or x_new >= MAX_GRID or y_new < 0 or y_new >= MAX_GRID:
+        # check directions
+        for dir_index, (row_change, col_change) in enumerate(direction_map):
+            # check opposite direction
+            if (curr_dir + 2) % 4 == dir_index:
                 continue
 
-            if (x_new, y_new) in visited:
-                continue
-
-            if (x_new, y_new) in corrupted_bytes:
-                continue
-
-            item = ((x_new, y_new), direction, steps + 1)
-            if item in unvisited:
-                continue
-
-            unvisited.append(item)
+            new_row, new_col = current_row + row_change, current_col + col_change
+            if grid[new_row][new_col] != "#":
+                unvisited.append(((new_row, new_col), curr_score + 1, dir_index))
 
     return -1
 
 
-file_data = get_file_data("InputFile")
-corrupted_bytes = []
-all_bytes = []
+grid = make_grid()
 
+
+
+file_data = get_file_data("InputFile")
+
+all_bytes = []
 for i in range(len(file_data)):
     points = file_data[i]
-    y = int(points.split(",")[1])
-    x = int(points.split(",")[0])
-    all_bytes.append((x, y))
+    row = int(points.split(",")[1])
+    col = int(points.split(",")[0])
+    all_bytes.append((row, col))
 
+corrupted_bytes = []
 for i in range(SIMULATE_BYTES):
-    points = file_data[i]
-    y = int(points.split(",")[1])
-    x = int(points.split(",")[0])
-    corrupted_bytes.append((x, y))
-
-print("Part one answer:", do_part_one(corrupted_bytes))
+    row, col = all_bytes[i]
+    grid[row+1][col+1] = "#"
 
 
-b = 1024
+print("Part one answer:", traverse_maze(grid))
+
+b = SIMULATE_BYTES
 while b < len(all_bytes):
-    corrupted_bytes.append(all_bytes[b])
-    steps = do_part_one(corrupted_bytes)
+    row, col = all_bytes[b]
+    grid[row + 1][col + 1] = "#"
+    steps = traverse_maze(grid)
     if steps == -1:
         print("Part two answer:", str(all_bytes[b][0]) + "," + str(all_bytes[b][1]))
         break
     b += 1
-
-
-
