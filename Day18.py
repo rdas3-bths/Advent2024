@@ -1,3 +1,5 @@
+import time
+
 MAX_GRID = 71
 SIMULATE_BYTES = 1024
 DIRECTIONS = [(0, 1), (0, -1), (1, 0), (-1, 0)]
@@ -46,7 +48,7 @@ def traverse_maze(grid):
     direction_map = [(0, 1), (-1, 0), (0, -1), (1, 0)]
     visited = {}
 
-    unvisited = [(start, 0, 0)]  # (current_row, current_col), node_path, score, direction
+    unvisited = [(start, 0, 0)]
     while unvisited:
         (current_row, current_col), curr_score, curr_dir = unvisited.pop(0)
         if (current_row, current_col) == end:
@@ -58,7 +60,6 @@ def traverse_maze(grid):
         visited[((current_row, current_col), curr_dir)] = curr_score
 
         for dir_index, (row_change, col_change) in enumerate(direction_map):
-            # check opposite direction
             if (curr_dir + 2) % 4 == dir_index:
                 continue
 
@@ -70,9 +71,6 @@ def traverse_maze(grid):
 
 
 grid = make_grid()
-
-
-
 file_data = get_file_data("InputFile")
 
 all_bytes = []
@@ -90,7 +88,9 @@ for i in range(SIMULATE_BYTES):
 steps = traverse_maze(grid)
 print("Part one answer:", min(steps))
 
-b = SIMULATE_BYTES-1
+# brute forcing this
+# takes about 20-30 seconds to run
+b = SIMULATE_BYTES
 while len(steps) != 0:
     b += 1
     row, col = all_bytes[b]
