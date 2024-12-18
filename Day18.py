@@ -91,15 +91,14 @@ for i in range(SIMULATE_BYTES):
     row, col = all_bytes[i]
     grid[row+1][col+1] = "#"
 
+steps = traverse_maze(grid)
+print("Part one answer:", min(steps))
 
-print("Part one answer:", min(traverse_maze(grid)))
-
-b = SIMULATE_BYTES
-while b < len(all_bytes):
+b = SIMULATE_BYTES-1
+while len(steps) != 0:
+    b += 1
     row, col = all_bytes[b]
     grid[row + 1][col + 1] = "#"
     steps = traverse_maze(grid)
-    if len(steps) == 0:
-        print("Part two answer:", str(all_bytes[b][1]) + "," + str(all_bytes[b][0]))
-        break
-    b += 1
+
+print("Part two answer:", str(all_bytes[b][1]) + "," + str(all_bytes[b][0]))
