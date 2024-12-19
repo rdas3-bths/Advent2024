@@ -29,7 +29,7 @@ def is_possible(towel):
             # update possible if we found a match
             if check:
                 possible = True
-            count += number
+                count += number
     return possible, count
 
 
