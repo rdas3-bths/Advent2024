@@ -1,4 +1,4 @@
-import functools
+from functools import cache
 
 
 def get_file_data(file_name):
@@ -9,7 +9,7 @@ def get_file_data(file_name):
     return data
 
 
-@functools.cache
+@cache
 def is_possible(towel):
     if towel == '':
         return True, 1
