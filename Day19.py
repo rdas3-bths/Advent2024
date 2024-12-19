@@ -18,7 +18,8 @@ def is_possible(towel):
     for start in available_designs:
         if towel.startswith(start):
             check, number = is_possible(towel[len(start):])
-            possible = possible or check
+            if check:
+                possible = True
             count += number
     return possible, count
 
