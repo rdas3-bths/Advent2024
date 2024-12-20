@@ -14,7 +14,6 @@ def get_file_data(file_name):
 
 
 def traverse_maze(grid, start, end):
-    steps_to_goal = []
     #                  r        d        l        u
     direction_map = [(0, 1), (-1, 0), (0, -1), (1, 0)]
     visited = {}
@@ -22,8 +21,6 @@ def traverse_maze(grid, start, end):
     unvisited = [(start, 0, 0)]
     while unvisited:
         (current_row, current_col), curr_score, curr_dir = unvisited.pop(0)
-        if (current_row, current_col) == end:
-            steps_to_goal.append(curr_score)
 
         if (current_row, current_col) in visited:
             continue
