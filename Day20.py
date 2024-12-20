@@ -1,8 +1,8 @@
 def distance(point1, point2):
-    distance = 0
+    d = 0
     for i in range(len(point1)):
-        distance += abs(point1[i] - point2[i])
-    return distance
+        d += abs(point1[i] - point2[i])
+    return d
 
 
 def get_file_data(file_name):
@@ -62,7 +62,6 @@ def find_cheat_node_part_one(grid):
 
 def find_cheats_part_two(visited):
     count = 0
-    i = 0
     computed = set()
     for node1 in visited:
         for node2 in visited:
@@ -75,7 +74,6 @@ def find_cheats_part_two(visited):
                             count += 1
                         computed.add((node1, node2))
                         computed.add((node2, node1))
-        i += 1
     return count
 
 
