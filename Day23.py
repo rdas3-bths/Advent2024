@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 import networkx
 
 
@@ -18,7 +16,6 @@ def triplet_contains_t(triplet):
     return False
 
 
-networks = defaultdict(lambda : set())
 file_data = get_file_data("input_file")
 
 
@@ -35,7 +32,7 @@ for c in connections:
         part_one_answer += 1
 
 print("Part one answer:", part_one_answer)
-
+print("Part two answer:", end=" ")
 largest_connections = connections[-1]
 largest_connections.sort()
 for i in range(len(largest_connections)):
